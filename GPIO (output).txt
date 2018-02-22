@@ -1,0 +1,23 @@
+#include <lm4f120h5qr.h>
+void wait(void);
+int main()
+{
+  SYSCTL->RCGCGPIO = 0x20; // to enable port f only
+  GPIOF->DIR = 0xE; // to set pins as output
+  GPIOF->DEN = 0xE; // to enable the pins
+  while(1)
+  {
+    GPIOF->DATA = 0x02; // to set pf2
+    wait();
+    GPIOF->DATA = 0x04;// to set pf2
+    wait;
+    GPIOF->DATA = 0x08;// to set pf3
+    wait;
+  }
+  return 0;
+}
+void wait()
+{
+  int clockCounter = 0;
+  while(clockCounter++ < 1000000);
+}
