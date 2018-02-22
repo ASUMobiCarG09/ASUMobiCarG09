@@ -1,0 +1,76 @@
+int in1= 1 ;
+int in2 = 2 ;
+int in3 = 3 ;
+int in4 = 4;
+int ena = 5 ;
+int enb = 6;
+char readchar;
+void setup()
+{
+Serial.begin(9600);
+pinMode(in1, OUTPUT);//left side 
+pinMode(in2, OUTPUT);//left 
+pinMode(in3, OUTPUT);//right 
+pinMode(in4, OUTPUT);//right 
+pinMode(ena, OUTPUT);//enable a  left
+pinMode(enb, OUTPUT);//enable b   right
+
+}
+
+void loop()
+{
+while(Serial.available())
+{
+readchar=Serial.read();
+  if(readchar=="F"){
+  for(int i=100;i<255;i++){
+   analogWrite(ena,i);
+   analogWrite(enb,i);
+   delay(5);
+  digitalWrite(in1,HIGH);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,HIGH);
+  digitalWrite(in4,LOW);
+ }
+ } 
+  if(readchar=="B"){
+  for(int i=100;i<255;i++){
+   analogWrite(ena,i);
+   analogWrite(enb,i);
+   delay(5);
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,HIGH);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,HIGH);
+  }
+  }
+   if(readchar=="R"){
+  for(int i=100;i<255;i++){
+   analogWrite(enb,i);
+   delay(5);
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,HIGH);
+  digitalWrite(in4,LOW);
+  }
+   }
+   if(readchar=="L"){
+  for(int i=100;i<255;i++){
+   analogWrite(ena,i);
+   delay(5);
+  digitalWrite(in1,HIGH);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,LOW);
+  }
+  }
+  
+  if(readchar=="S"){
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,LOW);
+  }
+  
+}
+}
