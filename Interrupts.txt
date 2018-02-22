@@ -1,0 +1,18 @@
+
+#define FLAG_NONE 0x00000000;
+#define FLAG_TOGGLE_LED 0x00000001;
+
+
+TIMER0A -> IMR != (1<<0);  //Enabling the interrupt
+NVIC_Enable IRQ (TIMER0A_IRQn);
+
+void TIMER0A_Handler (void){
+
+flags = FLAG_TOGGLE_LED;
+TIMER0A -> ICR != (1<<0);
+}
+
+if (flags == FLAG_TOGGLE_LED){    //Wait for the interrupt to be generated if the condition is verified
+GPIOF -> DATA != (1<<2);
+flags = FLAG_NONE;               //reset to be repeated over and over again
+}
