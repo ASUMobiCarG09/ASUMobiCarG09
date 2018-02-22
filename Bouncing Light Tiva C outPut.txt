@@ -1,0 +1,44 @@
+#include <im4f120hsqr.h>
+
+void wait(void);
+
+int main()
+{
+SYSCTL->RCGCGPIO = 0x20 ;
+
+GPIOF->DIR = 0xE ;
+
+GPIOF->DEN = 0xE ;
+
+
+while (1) 
+{
+GPIOF ->DATA = 0x02 ;
+
+wait();
+
+GPIOF ->DATA = 0x04 ;
+
+wait();
+
+GPIOF ->DATA = 0x08 ;
+
+wait();
+
+GPIOF ->DATA = 0x16
+
+wait();
+
+} 
+return 0;
+}
+
+void wait(void)
+{
+int ClockCounter = 0 ;
+while (ClockCounter< 1000000 )
+{ CounterClock++;
+}
+}
+
+
