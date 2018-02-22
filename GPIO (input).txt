@@ -1,0 +1,29 @@
+#include <lm4f120h5qr.h>
+int main()
+{
+  SYSCTL->RCGCGPIO = 0x20;// enble port f only
+  GPIOF->LOCK = 0x4C4F434B;//to unlock the register
+  GPIOF->CR = 0xFF;// to enable ability to write for pf0
+  GPIOF->DIR = 0x0E; // make pf0 and pf4 inputs and make pf1,pf2 and pf3 outputs
+  GPIOF->PUR = 0x11; // enable pull up resistors for pf0 and pf4
+  GPIOF->DEN = 0x1F; // enable pins pf0 to pf4
+  while(1)
+  {
+    switch( GPIOF->DATA & 0x11 )
+    {
+    case 0x00: //both switches are pressed
+      GPIOF->DATA = (1<<1); //turn on red led
+      break;
+    case 0x01:
+      GPIOF->DATA = (1<<2); //turn on blue led
+      break;
+    case 0x10:
+      GPIOF->DATA = (1<<3); // turn on green led
+      break;
+    default:
+      GPIOF->DATA &= ~( (1<<1) | (1<<2) | (1<<3) ); //GPIOF->DATA = GPIOF->DATA & 11110001
+      break;
+    }
+  }
+  return 0;
+}
