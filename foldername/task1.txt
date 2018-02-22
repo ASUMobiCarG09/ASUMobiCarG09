@@ -1,0 +1,32 @@
+
+#include <lm4f120h5qr.h>
+void InitializeTimer0 ();
+int main()
+{
+  SYSCTL->RCGCGPIO=0x20; //to enable port f
+  GPIOF->DIR=(1<<2); //set pf2 to output
+  GPIOF->DEN=(1<<2); //enable the function of the pins
+  GPIOF->DATA |=(1<<2); //pf2 is set to high(LED is on)
+  InitializeTimer0();
+  while(1)
+  {
+    if( (TIMER0->RIS & 0x00000001) == 1) //check that the timer finished counting
+    {
+      TIMER0->ICR |= (1<<0); //clear RIS(bit used as flag)
+      GPIOF->DATA ^= (1<<2); //toggle LED (because of XOR)
+    }
+  }
+      
+  
+  return 0;
+}
+void InitializeTimer0 ()
+{
+  SYSCTL->RCGCTIMER |=(1<<0); //to use timer0
+  TIMER0->CTL &=~(1<<0); //ensure the timer is disabled
+  TIMER0->CFG=0x00000000; //GPTM configuration register value is set to 0
+  TIMER0->TAMR |=(0x2<<0); //periodic mode
+  TIMER0->TAMR |= (1<<4); //count up
+  TIMER0->TAILR=0x00f42400; //16,000,000
+  TIMER0->CTL |= (1<<0); //enable the timer
+}
