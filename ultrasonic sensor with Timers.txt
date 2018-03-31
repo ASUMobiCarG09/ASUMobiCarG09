@@ -1,0 +1,38 @@
+#define trigger 3
+#define echo 6
+
+volatile long time;
+volatile int distance;
+
+void TIMER_Init()
+{
+  TCCR1B = 0;
+  TCCR2B = 0;
+  TCCR2B |= ((1<<1) | (1<<2) | (1<<3));
+  TIMSK2 |= (1<<0); 
+  sei();
+}
+void setup() {
+  TIMER_Init();
+pinMode (trigger , OUTPUT );
+pinMode (echo , INPUT );
+}
+
+ISR(TIMER2_OVF_vect)
+{
+   digitalWrite(trigger,LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigger,HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigger,LOW);
+  time = pulseIn(echo,HIGH);
+  distance = time*0.034/2;
+  Serial.println(distance);
+  
+  if(distance < 14)
+  {
+    Right();
+    delay(6000);
+    Stop();
+  }
+}
