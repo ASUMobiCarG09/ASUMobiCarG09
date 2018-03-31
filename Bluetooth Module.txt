@@ -1,0 +1,54 @@
+#include <SoftwareSerial.h>
+SoftwareSerial bluetooth(0, 1);
+int data;
+void setup() {
+bluetooth.begin(9600);
+}
+void loop() {
+  if (bluetooth.available())
+  {
+    data = bluetooth.read();
+if(data =='1') // forward
+{  
+  forward();
+bluetooth.println("Forward");
+}
+else if(data =='7') // bridge
+{  
+  bridge();
+bluetooth.println("Bridge");
+}
+else if(data =='2') //backward
+{
+  backward();
+bluetooth.println("Backward");
+
+}
+else if(data =='0') //stop
+{
+  Stop();
+bluetooth.println("Stop");
+}
+else if ( data =='3') //SlightRight
+{
+  SlightRight();
+  bluetooth.println("Slight Right");
+}
+else if( data=='4') //Slight Left
+{
+  SlightLeft();
+  bluetooth.println("Slight Left");
+}
+else if (data=='5') //Right
+{
+  Right();
+  bluetooth.println ("Right");
+}
+else if (data =='6') //Left
+{
+  Left();
+  bluetooth.println("Left");
+}
+
+}
+}
