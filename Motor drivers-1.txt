@@ -1,0 +1,87 @@
+#define mRP 9 // Right Postive pb1
+#define mRN 10 // Right Negative pb2 en:pb3
+#define mLP 7 // Left Postive pd7
+#define mLN 8 // Left Negative pb0 en:pd5
+void forward()
+{
+digitalWrite(mRP, HIGH);
+digitalWrite(mRN, LOW);
+digitalWrite(mLP, HIGH);
+digitalWrite(mLN, LOW);
+analogWrite(5,150);
+analogWrite(11,150);
+}
+
+void bridge()
+{
+digitalWrite(mRP, HIGH);
+digitalWrite(mRN, LOW);
+digitalWrite(mLP, HIGH);
+digitalWrite(mLN, LOW);
+digitalWrite(5,HIGH);
+digitalWrite(11,HIGH);
+}
+
+void backward()
+{
+digitalWrite(mRP, LOW);
+digitalWrite(mRN, HIGH);
+digitalWrite(mLP, LOW);
+digitalWrite(mLN, HIGH);
+digitalWrite(5,HIGH);
+digitalWrite(11,HIGH);
+}
+
+void Stop()
+{
+digitalWrite(mRP, LOW);
+digitalWrite(mRN, LOW);
+digitalWrite(mLP, LOW);
+digitalWrite(mLN, LOW);
+}
+void SlightRight()
+{ 
+  digitalWrite (mRP,HIGH);
+  digitalWrite(mRN, LOW);
+  digitalWrite(mLP, HIGH);
+  digitalWrite(mLN, LOW);
+digitalWrite(11,HIGH);
+analogWrite(5,100);
+}
+void SlightLeft ()
+{
+  digitalWrite (mRP,HIGH);
+  digitalWrite(mRN, LOW);
+  digitalWrite(mLP, HIGH);
+  digitalWrite(mLN, LOW);
+  digitalWrite(5,HIGH);
+  analogWrite(11,100);
+  
+}
+  void Right()
+  {
+    digitalWrite(mRP,HIGH);
+    digitalWrite(mRN, LOW);
+    digitalWrite(mLP, LOW);
+    digitalWrite(mLN, HIGH);
+    digitalWrite(5,HIGH);
+digitalWrite(11,HIGH);
+  }
+   void Left()
+   {
+    digitalWrite (mRP,LOW);
+    digitalWrite(mRN, HIGH);
+    digitalWrite(mLP, HIGH);
+    digitalWrite(mLN, LOW);
+    digitalWrite(5,HIGH);
+digitalWrite(11,HIGH);
+    }
+
+void setup() {
+pinMode(mRP, OUTPUT);
+pinMode(mRN, OUTPUT);
+pinMode(mLP, OUTPUT);
+pinMode(mLN, OUTPUT);
+pinMode(5,OUTPUT); //ENA
+pinMode(11,OUTPUT); //ENB
+}
