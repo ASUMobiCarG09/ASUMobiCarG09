@@ -1,0 +1,63 @@
+#include <avr/io.h>
+
+bool Rx , Tx;
+uint8_t In_Data;
+
+void SPI_initMaster(void) 
+{
+  /*
+   * SS(PB2)   --> Output
+   * MOSI(PB3) --> Output 
+   * MISO(PB4) --> Input
+   * SCK(PB5) --> Output
+  */
+  DDRB = DDRB | (1<<PB2);
+  DDRB = DDRB | (1<<PB3);
+  DDRB = DDRB & ~(1<<PB4);
+  DDRB = DDRB | (1<<PB5);
+  
+  SPCR = (1<<SPE) | (1<<MSTR) | (1<<SPR0);
+  SPSR = (1<<0);// enable SPI + enable Master + choose SPI clock = Fosc/8
+}
+
+void SPI_MasterTransmit(uint32_t cData)
+{
+  Tx = true;
+  SPDR = cData;
+  while(!(SPSR & (1<<SPIF)));
+  PORTB ^= (1<<PB1);
+  //SPSR &= ~(1<<SPIF);
+}
+
+uint8_t SPI_recieveByte(void)
+{
+  Rx = true;
+  while(!(SPSR & (1<<SPIF)));
+  PORTB ^= (1<<PB0);
+  //SPSR &= ~(1<<SPIF);
+  return SPDR; //return the received byte from SPI data register
+}
+
+ISR(SPI_STC_vect)
+{
+  if(Tx = true) PORTB |= (1<<PB0);
+  if(Rx = true) PORTB |= (1<<PB1);
+}
+
+int main(void)
+{
+  Serial.begin(9600);
+  DDRD |= (1<<PD2) | (1<<PD3);
+  DDRB |= (1<<PB0) | (1<<PB1);
+  PORTD |= (1<<PD3);
+  PORTB |= (1<<PB2);
+  SPI_initMaster();
+  while(1)
+  {
+    Serial.println(SPDR);
+    Tx = false;
+    Rx = false;
+    SPI_MasterTransmit(0x73);
+    In_Data = SPI_recieveByte();
+  }
+}
