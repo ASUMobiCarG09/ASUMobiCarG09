@@ -1,0 +1,42 @@
+const float SPEED = 600;
+const float KP = 0.4;
+const float KD = 12;
+const float KI = 0;
+const int SENSOR[N_SENS] = { A0, A1, A2, A3, A4 };     //Arduino pins
+/* GLOBAL VARIABLES */
+
+unsigned long ms = 0;
+
+int sens_max[N_SENS];          //Maximum value each sensor measures (calibrated)
+int sens_min[N_SENS];          //Minimum value each sensor measures (calibrated)
+int start = 0;
+float line_pos = 0;
+float last_line_pos = 0;
+
+void setup() {
+  Serial.begin(9600);
+  InitializeGPIO();
+  
+  for(int x = 0; x < N_SENS; x++){
+      sens_max[x] = 0;
+      sens_min[x] = 1023;
+  }
+  
+}
+
+
+void InitializeGPIO(){
+  pinMode(BTN1, INPUT_PULLUP);
+  pinMode(BTN2, INPUT_PULLUP);
+
+  pinMode(LEDG, OUTPUT);
+
+  pinMode(MOT1, OUTPUT);
+  pinMode(MOT2, OUTPUT);
+  pinMode(MOT3, OUTPUT);
+  pinMode(MOT4, OUTPUT);
+
+  for(int x = 0; x <= N_SENS; x++){
+    pinMode(SENSOR[x], INPUT);
+  }
+}
